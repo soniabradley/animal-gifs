@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Gif Animals and Sounds</title>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+</head>
+
+<body>
+    <button data-animal="owl">Hoot</button>
+    <button data-animal="mouse">Squeak</button>
+    <button data-animal="tiger">Grrr</button>
+
+<div id="gifsGoHere"></div>
+
+    <script type="text/javascript">
+        $('button').on('click', function () {
+                    var x = $(this).data("animal");
+                    var queryURL = 'https://api.giphy.com/v1/gifs/search?q=' + x + '&api_key=dc6zaTOxFJmzC&limit=10';
+                    $.ajax({
+                            url: queryURL,
+                            method: 'GET'
+                        })
+                        .done(function (response) {
+                            // create dynamic elements
+                            for (var i = 0; i < response.data.length; i++) {
+                                // new var = jQuery of div
+                                var animalDiv = $('<div>');
+                                // give it a paragraph and modify text
+                                var p = $('<p>').text('Rating: ' + response.data[i].rating);
+                                // put in an image
+                                var animalImage = $('<img>');
+                                animalImage.attr('src',response.data[i].images.fixed_height.url);
+                                animalDiv.append(p);
+                                animalDiv.append(animalImage);
+                                $('#gifsGoHere').prepend(animalDiv);
+                            }
+                        })
+        })
+    </script>
+</body>
+
+</html>
